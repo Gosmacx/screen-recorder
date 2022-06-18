@@ -2,10 +2,6 @@ const { app, BrowserWindow, desktopCapturer, ipcMain, dialog } = require('electr
 const { writeFile } = require('fs');
 const path = require('path');
 
-if (require('electron-squirrel-startup')) {
-  app.quit();
-}
-
 const createWindow = () => {
   const mainWindow = new BrowserWindow({
     width: 800,

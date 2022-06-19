@@ -13,6 +13,10 @@ getListButton.addEventListener('click', () => {
   ipcRenderer.send('list')
 })
 
+function t(a) {
+  return a.toString().length == 1 ? '0' + a : a
+}
+
 startButton.addEventListener('click', () => {
   if (!recorder) return;
   startTime = Date.now();
@@ -21,7 +25,7 @@ startButton.addEventListener('click', () => {
     const hours = Math.floor(time / (1000 * 60 * 60))
     const minutes = Math.floor(time / 60000);
     const seconds = Math.floor((time % 60000) / 1000);
-    timeText.innerHTML = `${hours}:${minutes}:${seconds}`;
+    timeText.innerHTML = `${t(hours)}:${t(minutes)}:${t(seconds)}`;
   });
   recorder.start()
   startButton.classList.add('disabled')

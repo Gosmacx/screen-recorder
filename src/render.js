@@ -2,8 +2,11 @@ const { ipcRenderer } = require('electron')
 const getListButton = document.querySelector('#videoSelectBtn')
 const startButton = document.querySelector('#startBtn')
 const stopButton = document.querySelector('#stopBtn')
+const timeText = document.querySelector('#time')
 
 let recorder;
+let startTime;
+let timer;
 const recordedChunks = [];
 
 getListButton.addEventListener('click', () => {
@@ -12,6 +15,14 @@ getListButton.addEventListener('click', () => {
 
 startButton.addEventListener('click', () => {
   if (!recorder) return;
+  startTime = Date.now();
+  timer = setInterval(() => {
+    const time = new  Date(Date.now() - startTime)
+    const hours = Math.floor(time / (1000 * 60 * 60))
+    const minutes = Math.floor(time / 60000);
+    const seconds = Math.floor((time % 60000) / 1000);
+    timeText.innerHTML = `${hours}:${minutes}:${seconds}`;
+  });
   recorder.start()
   startButton.classList.add('disabled')
   stopButton.classList.remove('disabled')
@@ -20,6 +31,9 @@ startButton.addEventListener('click', () => {
 stopButton.addEventListener('click', () => {
   if (!recorder) return;
   recorder.stop()
+  clearInterval(timer)
+  timer = null
+  timeText.innerHTML = '00:00:00'
   startButton.classList.remove('disabled')
   stopButton.classList.add('disabled')
 })
